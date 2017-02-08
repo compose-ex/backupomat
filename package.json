@@ -1,0 +1,15 @@
+{
+  "name": "backupomat",
+  "version": "1.0.0",
+  "description": "A Node-based tool for backing up Compose databases",
+  "main": "backupomat.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "node-fetch": "^1.6.3",
+    "yargs": "^6.6.0"
+  }
+}
