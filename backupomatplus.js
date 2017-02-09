@@ -115,11 +115,10 @@ let pollForRecipeComplete = (recipeid) => {
     fetch(`${apibase}/recipes/${recipeid}`, { headers: apiheaders })
         .then(function (res) { return res.json() })
         .then(function (recipe) {
-            console.log(recipe);
             if (recipe.status == "complete") { 
                 process.stdout.write("\n"); 
-                findLatestOndemand(recipe.deploymentid);
-                return true; }
+                return getLatestOndemand(recipe.deployment_id);
+                }
             else {
                 process.stdout.write('.');
                 setTimeout(pollForRecipeComplete, 10000, recipeid);
@@ -127,21 +126,21 @@ let pollForRecipeComplete = (recipeid) => {
         })
 };
 
-let findLatestOndemand = (deploymentid) => {
-    console.log(deploymentid);
+let getLatestOndemand = (deploymentid) => {
     fetch(`${apibase}/deployments/${deploymentid}/backups`, { headers: apiheaders })
         .then(function (res) {
             return res.json();
         })
         .then(function (json) {
-            console.log(json);
             let backups = json["_embedded"].backups;
             for (let backup of backups) {
                 if(backup.type=="on_demand") {
-                    console.log(`Ondemand id: ${backup.backupid} $(backupid.status)`);
+                    getBackup(backup.deployment_id,backup.id)
                     return true;
                 }
             }
+            console.log("No on demand backup found")
+            return false;
         })
         .catch(function (err) {
             console.log(err);
